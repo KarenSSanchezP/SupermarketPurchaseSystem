@@ -56,26 +56,6 @@ class UsuarioRepository():
                 }
             writer.writerow(linea)
     
-    def buscar_usuario(self, username):
-        """
-        Busca un usuario en el archivo CSV por su username
-        """
-        Validaciones('usuarios').validar_archivo_existente()
-        
-        try:
-            with open(self.archivo, 'r') as archivo:
-                reader = csv.DictReader(archivo)
-                for linea in reader:
-                    if linea['username'] == username:
-                        if linea['rol'] == 'admin':
-                            return Admin(linea['user_id'], linea['username'], linea['password'])
-                        else:
-                            return Cliente(linea['user_id'], linea['username'], linea['password'])
-        except (ValueError, IndexError):
-            raise ValueError("Error al leer el archivo CSV")
-        
-        raise ValueError(f"Usuario {username} no encontrado")
-    
     def buscar_usuario_por_username(self, username_buscado):
         """
         Busca un usuario en el archivo CSV por su username
@@ -89,7 +69,11 @@ class UsuarioRepository():
                 reader = csv.DictReader(archivo)
                 for linea in reader:
                     if linea['username'] == username_buscado:
-                        return linea
+                        if linea['rol'] == 'admin':
+                            admin = Admin(int(linea['user_id']), linea['nombres'], linea['apellidos'], linea['password'], bool(linea['es_primer_ingreso']), linea['username'])
+                            return admin
+                        else:
+                            return Cliente(int(linea['user_id']), linea['nombres'], linea['apellidos'], linea['password'], bool(linea['es_primer_ingreso']), linea['username'])
             return None
         except (ValueError, IndexError):
             raise ValueError("Error al leer el archivo CSV")

@@ -10,8 +10,8 @@ class AuthService:
         Verifica las credenciales del usuario
         """
         try:
-            usuario = self.repo.buscar_usuario(username)
-            if usuario == None:
+            usuario = self.repo.buscar_usuario_por_username(username)
+            if usuario is None:
                 raise ValueError("Usuario no encontrado")
             else:
                 if usuario.password == password:

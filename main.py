@@ -16,8 +16,28 @@ def prueba_rapida():
     except Exception as e:
         print(f"ERROR: {e}")
         
+    
+def prueba_login():
+    servicio_auth = AuthService()
+    print("--- BIENVENIDO AL SUPERMERCADO ---")
+    
+    usuario = input("Usuario: ")
+    contraseña = input("Contraseña: ")
+    
+    try:
+        usuario_logueado = servicio_auth.login(usuario, contraseña)
+        
+        print("\nLOGIN EXITOSO")
+        print(f"Has entrado como {usuario_logueado.username}")
+    
+    except Exception as e:
+        print(f"ERROR: {e}")
+
+
 if __name__ == "__main__":
     # menu = Menu()
     # menu.mostrar_menu_principal()
     
-    prueba_rapida()
+    # prueba_rapida()
+    
+    prueba_login()
