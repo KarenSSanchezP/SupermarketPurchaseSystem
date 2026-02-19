@@ -14,20 +14,18 @@ class Usuario(ABC):
         else:
             self._username = self.generar_username()
     
-    def generar_username(self):
-        inicial_nombre = self._nombres[0]
-        inicial_apellido = self._apellidos[0]
-        return f"{inicial_nombre}{inicial_apellido}{self._user_id}"
+    # Getters y setters de propiedades privadas 
+    @property
+    def user_id(self):
+        return self._user_id
     
     @property
-    def username(self):
-        return self._username
+    def nombres(self):
+        return self._nombres
     
-    @username.setter
-    def username(self, nuevo_username):
-        if len(nuevo_username) < 3:
-            raise ValueError("El nombre de usuario debe tener al menos 3 caracteres.")
-        self._username = nuevo_username
+    @property
+    def apellidos(self):
+        return self._apellidos
     
     @property
     def password(self):
@@ -50,6 +48,32 @@ class Usuario(ABC):
     @property
     def rol(self):
         return self._rol
+    
+    @rol.setter
+    def rol(self, nuevo_rol):
+        if nuevo_rol not in ('admin', 'cliente'):
+            raise ValueError("El rol debe ser 'admin' o 'cliente'")
+        self._rol = nuevo_rol
+    
+    def generar_username(self):
+        """
+        Genera un nombre de usuario combinando las iniciales del 
+        nombre y apellido con el ID del usuario
+        Ejemplo: Juan Pérez con ID 5 -> JP5
+        """
+        inicial_nom = self._nombres[0]
+        inicial_ape = self._apellidos[0]
+        return f"{inicial_nom}{inicial_ape}{self._user_id}"
+    
+    @property
+    def username(self):
+        return self._username
+    
+    @username.setter
+    def username(self, nuevo_username):
+        if len(nuevo_username) < 3:
+            raise ValueError("El nombre de usuario debe tener al menos 3 caracteres.")
+        self._username = nuevo_username
     
     def __str__(self):
         return f"[{self._rol}] {self._nombres} {self._apellidos} (User: {self._username})"
