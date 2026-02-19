@@ -19,7 +19,7 @@ class UsuarioRepository():
                 
         id_max = 0
         try:
-            with open(self.archivo, 'r') as archivo:
+            with open(self.archivo, 'r', encoding='utf-8') as archivo:
                 reader = csv.DictReader(archivo)
                 for linea in reader:
                     id_actual = int(linea['user_id'])
@@ -40,7 +40,7 @@ class UsuarioRepository():
                     'rol', 'es_primer_ingreso', 'username']
         archivo_existe = os.path.exists(self.archivo)
         
-        with open(self.archivo, mode='a', newline='') as archivo:
+        with open(self.archivo, mode='a', newline='', encoding='utf-8') as archivo:
             writer = csv.DictWriter(archivo, fieldnames=columnas)
             if not archivo_existe:
                 writer.writeheader()
@@ -56,6 +56,36 @@ class UsuarioRepository():
                 }
             writer.writerow(linea)
     
+    def actualizar_usuario(self, usuario_actualizado):
+        """
+        Actualiza un usuario existente en el archivo CSV
+        """
+        columnas = ['user_id', 'nombres', 'apellidos', 'password', 
+                    'rol', 'es_primer_ingreso', 'username']
+        usuarios = []
+        
+        try:
+            with open(self.archivo, 'r', encoding='utf-8') as archivo:
+                reader = csv.DictReader(archivo)
+                for linea in reader:
+                    if linea['username'] == usuario_actualizado.username:
+                        linea['user_id'] = usuario_actualizado.user_id
+                        linea['nombres'] = usuario_actualizado.nombres
+                        linea['apellidos'] = usuario_actualizado.apellidos
+                        linea['password'] = usuario_actualizado.password
+                        linea['rol'] = usuario_actualizado.rol
+                        linea['es_primer_ingreso'] = usuario_actualizado.es_primer_ingreso
+                        linea['username'] = usuario_actualizado.username
+                    usuarios.append(linea)
+            
+            with open(self.archivo, 'w', newline='', encoding='utf-8') as archivo:
+                writer = csv.DictWriter(archivo, fieldnames=columnas)
+                writer.writeheader()
+                for linea in usuarios:
+                    writer.writerow(linea)
+        except Exception as e:
+            raise e
+    
     def buscar_usuario_por_username(self, username_buscado):
         """
         Busca un usuario en el archivo CSV por su username
@@ -65,15 +95,16 @@ class UsuarioRepository():
             return None # Si el archivo no existe, no hay usuarios
         
         try:
-            with open(self.archivo, 'r') as archivo:
+            with open(self.archivo, 'r', encoding='utf-8') as archivo:
                 reader = csv.DictReader(archivo)
                 for linea in reader:
                     if linea['username'] == username_buscado:
+                        es_primer_ingreso = linea['es_primer_ingreso'] == 'True'
                         if linea['rol'] == 'admin':
-                            admin = Admin(int(linea['user_id']), linea['nombres'], linea['apellidos'], linea['password'], bool(linea['es_primer_ingreso']), linea['username'])
+                            admin = Admin(int(linea['user_id']), linea['nombres'], linea['apellidos'], linea['password'], es_primer_ingreso, linea['username'])
                             return admin
                         else:
-                            return Cliente(int(linea['user_id']), linea['nombres'], linea['apellidos'], linea['password'], bool(linea['es_primer_ingreso']), linea['username'])
+                            return Cliente(int(linea['user_id']), linea['nombres'], linea['apellidos'], linea['password'], es_primer_ingreso, linea['username'])
             return None
         except (ValueError, IndexError):
             raise ValueError("Error al leer el archivo CSV")

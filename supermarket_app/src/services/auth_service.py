@@ -34,3 +34,14 @@ class AuthService:
             return nuevo_cliente
         except Exception as e:
             raise e
+    
+    def cambiar_contrasena(self, usuario, contrasena_nueva):
+        """
+        Cambia la contraseña de un usuario
+        """
+        try:
+            usuario.password = contrasena_nueva
+            usuario.es_primer_ingreso = False
+            self.repo.actualizar_usuario(usuario)
+        except Exception as e:
+            raise e

@@ -1,2 +1,2 @@
 user_id,nombres,apellidos,password,rol,es_primer_ingreso,username
-1,Juan,Perez,123456,cliente,True,JP1
+1,Juan,Perez,12345678,cliente,False,JP1
