@@ -1,4 +1,5 @@
-# from supermarket_app.src.services.auth_service import AuthService
+from supermarket_app.src.ui.menu_principal import MenuPrincipal
+from supermarket_app.src.services.auth_service import AuthService
 from supermarket_app.src.ui.menu import Menu
 
 #  ---------------------------- PRUEBAS ----------------------------
@@ -9,7 +10,7 @@ from supermarket_app.src.ui.menu import Menu
     
 #     try:
 #         print("Registrando cliente...")
-#         cliente = servicio_auth.registrar_cliente("Juan", "Perez", "123456")
+#         cliente = servicio_auth.registrar_cliente("Juan Ernesto", "Martinez Pérez", "12345678")
         
 #         print(f"EXITO: Se creo el objeto cliente: {cliente}")
 #         print("Revisar el archivo CSV en /data/usuarios.csv")
@@ -36,8 +37,10 @@ from supermarket_app.src.ui.menu import Menu
 
 
 if __name__ == "__main__":
-    menu = Menu()
-    menu.menu_principal()
-    
     # prueba_rapida()
+    
+    menu_principal = MenuPrincipal()
+    menu_principal.mostrar()
+    
+    
     # prueba_login()

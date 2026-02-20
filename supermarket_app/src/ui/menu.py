@@ -8,16 +8,16 @@ class Menu:
             "2. Salir"
         ]
         self.opciones_admin = [
-            "1. Ver productos",
-            "2. Añadir producto",
-            "3. Eliminar producto",
-            "4. Salir"
+            "1. Crear usuario",
+            "2. Gestionar productos",
+            "3. Informe de productos",
+            "4. Cerrar sesión",
         ]
         self.opciones_cliente = [
-            "1. Ver productos",
-            "2. Comprar productos",
-            "3. Ver carrito",
-            "4. Salir"
+            "1. Comprar productos",
+            "2. Ver facturas pasadas",
+            "3. Actualizar mis datos",
+            "4. Cerrar sesión",
         ]
     
     def menu_principal(self):
@@ -57,11 +57,11 @@ class Menu:
             opcion = input("Seleccione una opción: ")
             
             if opcion == "1":
-                self.menu_admin_ver_productos(usuario_logueado)
+                self.menu_admin_crear_usuario(usuario_logueado)
             elif opcion == "2":
-                self.menu_admin_añadir_producto(usuario_logueado)
+                self.menu_admin_gestionar_productos(usuario_logueado)
             elif opcion == "3":
-                self.menu_admin_eliminar_producto(usuario_logueado)
+                self.menu_admin_informe_productos(usuario_logueado)
             elif opcion == "4":
                 print("-" * 43)
                 print("Cerrando sesión del administrador...")
@@ -85,11 +85,11 @@ class Menu:
             opcion = input("Seleccione una opción: ")
             
             if opcion == "1":
-                self.menu_cliente_ver_productos(usuario_logueado)
-            elif opcion == "2":
                 self.menu_cliente_comprar_productos(usuario_logueado)
+            elif opcion == "2":
+                self.menu_cliente_ver_facturas(usuario_logueado)
             elif opcion == "3":
-                self.menu_cliente_ver_carrito(usuario_logueado)
+                self.menu_cliente_actualizar_datos(usuario_logueado)
             elif opcion == "4":
                 print("-" * 43)
                 print("Cerrando sesión del cliente...\n")
@@ -115,6 +115,7 @@ class Menu:
                 
                 usuario_logueado = servicio_auth.login(usuario_input, contrasena_input)
                 print(f"¡Bienvenido {usuario_logueado.username}!")
+                time.sleep(1)
                 break
             except Exception as e:
                 print(f"Error: {e}")

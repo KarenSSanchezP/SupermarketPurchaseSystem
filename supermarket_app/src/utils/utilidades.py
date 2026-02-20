@@ -1,8 +1,11 @@
 import os
 
-class Validaciones:
-    def __init__(self, nombre_archivo):
-        self.archivo = f'supermarket_app/data/{nombre_archivo}.csv'
+class Utilidades:
+    def __init__(self, nombre_archivo=None):
+        if nombre_archivo:
+            self.archivo = f'supermarket_app/data/{nombre_archivo}.csv'
+        else:
+            self.archivo = None
         
     def validar_archivo_existente(self):
         if not os.path.exists(self.archivo):
@@ -31,3 +34,6 @@ class Validaciones:
         
         if len(password) > 50:
             raise ValueError("La contraseña debe tener 50 caracteres como máximo")
+    
+    def limpiar_consola(self):
+        os.system('cls' if os.name == 'nt' else 'clear')    

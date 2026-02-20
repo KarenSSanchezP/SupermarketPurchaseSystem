@@ -58,12 +58,13 @@ class Usuario(ABC):
     def generar_username(self):
         """
         Genera un nombre de usuario combinando las iniciales del 
-        nombre y apellido con el ID del usuario
-        Ejemplo: Juan Pérez con ID 5 -> JP5
+        de los apellidos con el ID del usuario
+        Ejemplo: Juan Ernesto Martinez Pérez con ID 5 -> MP5
         """
-        inicial_nom = self._nombres[0]
-        inicial_ape = self._apellidos[0]
-        return f"{inicial_nom}{inicial_ape}{self._user_id}"
+        apellido1, apellido2 = self._apellidos.split(' ')
+        inicial_ape1 = apellido1[0]
+        inicial_ape2 = apellido2[0]
+        return f"{inicial_ape1}{inicial_ape2}{self._user_id}"
     
     @property
     def username(self):

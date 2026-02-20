@@ -2,7 +2,7 @@ import csv
 import os
 from supermarket_app.src.models.usuarios.cliente import Cliente
 from supermarket_app.src.models.usuarios.admin import Admin
-from supermarket_app.src.utils.validaciones import Validaciones
+from supermarket_app.src.utils.utilidades import Utilidades
 
 class UsuarioRepository():
     def __init__(self):
@@ -39,10 +39,11 @@ class UsuarioRepository():
         columnas = ['user_id', 'nombres', 'apellidos', 'password', 
                     'rol', 'es_primer_ingreso', 'username']
         archivo_existe = os.path.exists(self.archivo)
+        archivo_existe_vacio = os.path.getsize(self.archivo) == 0 if archivo_existe else True
         
         with open(self.archivo, mode='a', newline='', encoding='utf-8') as archivo:
             writer = csv.DictWriter(archivo, fieldnames=columnas)
-            if not archivo_existe:
+            if not archivo_existe or archivo_existe_vacio:
                 writer.writeheader()
                 
             linea = {
@@ -101,10 +102,12 @@ class UsuarioRepository():
                     if linea['username'] == username_buscado:
                         es_primer_ingreso = linea['es_primer_ingreso'] == 'True'
                         if linea['rol'] == 'admin':
-                            admin = Admin(int(linea['user_id']), linea['nombres'], linea['apellidos'], linea['password'], es_primer_ingreso, linea['username'])
+                            admin = Admin(int(linea['user_id']), linea['nombres'], linea['apellidos'], 
+                                        linea['password'], es_primer_ingreso, linea['username'])
                             return admin
                         else:
-                            return Cliente(int(linea['user_id']), linea['nombres'], linea['apellidos'], linea['password'], es_primer_ingreso, linea['username'])
+                            return Cliente(int(linea['user_id']), linea['nombres'], linea['apellidos'], 
+                                        linea['password'], es_primer_ingreso, linea['username'])
             return None
         except (ValueError, IndexError):
             raise ValueError("Error al leer el archivo CSV")
